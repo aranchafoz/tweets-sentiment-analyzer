@@ -1,0 +1,20 @@
+{
+  "name": "tieto_test",
+  "version": "1.0.0",
+  "description": "Analyzer of tweets related with #Brexit establishing the sentiment(positive, negative or neutral) of each tweet.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node -r dotenv/config index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aranchafoz/tweets-sentiment-analyzer.git"
+  },
+  "author": "Arancha Ferrero",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
+}
