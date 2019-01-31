@@ -3,6 +3,9 @@ Analyzer of lastest 15 tweets related with #Brexit establishing the sentiment(po
 
 ![Screenshot](screenshot.png)
 
+### Requirements
+- [Node.js](https://nodejs.org/es/)
+
 ### Install
 Open a terminal on the project directory and run:
 ```
