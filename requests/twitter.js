@@ -15,9 +15,13 @@ module.exports = {
     let bodyJson = JSON.parse(body);
 
     let tweets = bodyJson.statuses.map((tweet, index) => {
+      let tweet_url = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
       return {
         id: index.toString(),
-        text: tweet.text
+        text: tweet.text,
+        language: tweet.lang,
+        url: tweet_url
+
       }
     })
 

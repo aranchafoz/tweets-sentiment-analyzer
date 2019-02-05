@@ -1,3 +1,8 @@
+var express = require('express')
+var app = express()
+
+// For Heroku
+app.set('port', (process.env.PORT || 3000));
 
 let twitter = require('./requests/twitter')
 let azure = require('./requests/azure')
@@ -8,31 +13,39 @@ const classify_score = (score) => {
   else return 'POSITIVE'
 }
 
-const display_results = (tweets, sentiments) => {
-
-  console.log("*************************************")
-  console.log("** LASTEST 15 TWEETS about #Brexit **")
-  console.log("*************************************\n\n")
-
-  tweets.map((tweet) => {
+const get_lastest_tweets_processed = (tweets, sentiments) => {
+  return tweets.map((tweet) => {
     for(i in sentiments.documents) {
       let sentiment = sentiments.documents[i]
       if(tweet.id === sentiment.id){
         let type = classify_score(sentiment.score)
 
-        console.log(tweet.text)
-        console.log(`--> ${type}`)
-        console.log(`Score: ${sentiment.score} (being 0 the worst and 1 the best))\n\n\n`)
+        return {
+          text: tweet.text,
+          type: type,
+          score: sentiment.score,
+          url: tweet.url
+        }
       }
     }
   })
 }
 
-async function main() {
+// Endpoint
+app.get('/', async function(req, res) {
   let tweets = await twitter.get_tweets()
   let sentiments = await azure.get_sentiments(tweets)
 
-  display_results(tweets, sentiments)
-}
+  let response = get_lastest_tweets_processed(tweets, sentiments)
 
-main()
+  res.setHeader('Content-Type', 'application/json')
+  res.status(200)
+  res.send(JSON.stringify(response, null, 3))
+  res.end()
+})
+
+app.listen(app.get('port'), function () {
+    console.log("Server running");
+});
+
+module.exports = app;
